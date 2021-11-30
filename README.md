@@ -155,8 +155,23 @@ gearbox rq
 Multithreding with Gevent
 -------------------------
 
-tgext.rq comes with a Gevent worker to enable more concurrency on job execution,
-to enable:
+tgext.rq comes with options to use a gevent worker to enable more concurrency on
+job execution, to enable first add GeventWorker to `install_requires` on
+`setup.py`
+
+```
+#setup.py
+
+install_requires = [
+    "TurboGears2 >= 2.4.3",
+    "rq",
+    ...,
+    "tgext.rq >= 0.0.4",
+    "gevent >= v1.1.2",
+    "rq-gevent-worker @ git+https://github.com/mikeabrahamsen/rq-gevent-worker@master#egg=rq-gevent-worker"
+```
+
+Then configure tgext.rq to use it:
 
 ```
 #development.ini
