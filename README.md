@@ -170,7 +170,7 @@ install_requires = [
     "TurboGears2 >= 2.4.3",
     "rq",
     ...,
-    "tgext.rq >= 0.0.4",
+    "tgext.rq >= 0.0.5",
     "gevent >= v1.1.2",
     "rq-gevent-worker @ git+https://github.com/mikeabrahamsen/rq-gevent-worker@master#egg=rq-gevent-worker"
 ```
