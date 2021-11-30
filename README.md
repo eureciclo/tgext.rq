@@ -175,3 +175,12 @@ Future Needs:
 * [add your needs here]
 
 PRs are welcome!
+
+How to upload to Pip
+--------------------
+
+```
+python setup.py sdist
+pip install twine
+twine upload dist/*
+```
