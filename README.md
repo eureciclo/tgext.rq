@@ -165,6 +165,20 @@ tgext.rq.worker_class = GeventWorker #default value is: Worker
 tgext.rq.gevent_pool_size = 3 #default value is: 20
 ```
 
+If you receive any errors related to gevent patches, like:
+
+```
+super(SSLContext, SSLContext).options.__set__(self, value) [Previous line repeated 473 more times] RecursionError: maximum recursion depth exceeded
+```
+
+You need to patch manually your application before it loads, add these lines
+before everything else on `app_cfg.py`
+
+```
+from gevent import monkey
+monkey.patch_all()
+```
+
 Contributions
 -------------
 
