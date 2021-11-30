@@ -10,6 +10,8 @@ Install
 
 ```
 pip install tgext.rq #or
+
+#setup.py
 install_requires = [
     "TurboGears2 >= 2.4.3",
     "rq",
@@ -54,9 +56,11 @@ gearbox rq
 Installing
 ----------
 
-Add tgext.rq to your `setup.cfg`, inside `install_requires`, something like:
+Add tgext.rq to your `setup.py`, inside `install_requires`, something like:
 
 ```
+#setup.py
+
 install_requires = [
     "TurboGears2 >= 2.4.3",
     "rq",
