@@ -33,7 +33,7 @@ class RQCommand(Command):
         redis = RedisConfig().client()
         with Connection(redis):
             worker = self.initialize_worker_class()
-            worker.work()
+            worker.work(with_scheduler = True)
 
     def initialize_worker_class(self):
         worker_class = config.get('tgext.rq.worker_class', 'Worker')

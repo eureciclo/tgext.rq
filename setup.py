@@ -7,7 +7,7 @@ try:
 except IOError:
     README = ''
 
-version = "0.0.5"
+version = "0.0.6"
 
 setup(
     name='tgext.rq',
@@ -27,7 +27,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "TurboGears2 >= 2.0",
-        "rq >= 1.0"
+        "rq >= 1.5"
     ],
     entry_points={
         'gearbox.commands': [
