@@ -7,7 +7,7 @@ try:
 except IOError:
     README = ''
 
-version = "0.0.2"
+version = "0.0.3"
 
 setup(
     name='tgext.rq',
@@ -15,11 +15,11 @@ setup(
     description="",
     long_description=README,
     long_description_content_type="text/markdown",
-    classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=['Development Status :: 5 - Production/Stable', 'Framework :: TurboGears'],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     keywords='turbogears2.extension',
     author='Leonardo Baptista',
     author_email='leonardoobaptistaa@gmail.com',
-    url='',
+    url='https://github.com/eureciclo/tgext.rq',
     license='MIT',
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     namespace_packages = ['tgext'],
@@ -27,7 +27,8 @@ setup(
     zip_safe=False,
     install_requires=[
         "TurboGears2 >= 2.0",
-        "rq >= 1.0"
+        "rq >= 1.0",
+        "rq-gevent-worker @ git+https://github.com/mikeabrahamsen/rq-gevent-worker@master#egg=rq-gevent-worker"
     ],
     entry_points={
         'gearbox.commands': [

@@ -152,6 +152,19 @@ or using the default development.ini file:
 gearbox rq
 ```
 
+Multithreding with Gevent
+-------------------------
+
+tgext.rq comes with a Gevent worker to enable more concurrency on job execution,
+to enable:
+
+```
+#development.ini
+
+tgext.rq.worker_class = GeventWorker #default value is: Worker
+tgext.rq.gevent_pool_size = 3 #default value is: 20
+```
+
 Contributions
 -------------
 
