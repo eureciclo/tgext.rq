@@ -160,8 +160,7 @@ Multithreding with Gevent
 -------------------------
 
 tgext.rq comes with options to use a gevent worker to enable more concurrency on
-job execution, to enable first add GeventWorker to `install_requires` on
-`setup.py`
+job execution, to enable first add gevent to `install_requires` on `setup.py`
 
 ```
 #setup.py
@@ -170,12 +169,11 @@ install_requires = [
     "TurboGears2 >= 2.4.3",
     "rq",
     ...,
-    "tgext.rq >= 0.0.5",
-    "gevent >= v1.1.2",
-    "rq-gevent-worker @ git+https://github.com/mikeabrahamsen/rq-gevent-worker@master#egg=rq-gevent-worker"
+    "tgext.rq >= 0.0.7",
+    "gevent >= v1.1.2"
 ```
 
-Then configure tgext.rq to use it:
+Then configure tgext.rq to use GeventWorker class:
 
 ```
 #development.ini
@@ -209,11 +207,20 @@ Future Needs:
 
 PRs are welcome!
 
+Thanks
+------
+
+* GeventWorker is based on this [github project: mikeabrahamsen/rq-gevent-worker](https://github.com/mikeabrahamsen/rq-gevent-worker)
+
 How to upload to Pip
 --------------------
+
+This section is for the maintainer to remember how to upload to pypi.
+Move along.
 
 ```
 python setup.py sdist
 pip install twine
 twine upload dist/*
 ```
+
