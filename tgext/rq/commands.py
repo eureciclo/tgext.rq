@@ -39,7 +39,7 @@ class RQCommand(Command):
         worker_class = config.get('tgext.rq.worker_class', 'Worker')
         opts = {}
         if worker_class == 'GeventWorker':
-            from rq_gevent_worker import GeventWorker as Worker
+            from .rq_gevent_worker import GeventWorker as Worker
             opts['pool_size'] = int(config.get('tgext.rq.gevent_pool_size', '20'))
         else:
             from rq import Worker
