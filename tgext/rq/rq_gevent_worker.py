@@ -19,6 +19,7 @@ from rq.worker import StopRequested, green, blue, WorkerStatus
 from rq.exceptions import DequeueTimeout
 from rq.logutils import setup_loghandlers
 from rq.version import VERSION
+from rq.scheduler import RQScheduler
 
 DEFAULT_LOGGING_DATE_FORMAT = '%H:%M:%S'
 DEFAULT_LOGGING_FORMAT = '%(asctime)s %(message)s'
@@ -65,6 +66,9 @@ class GeventWorker(Worker):
 
         def request_stop():
             if not self._stop_requested:
+                if self.scheduler:
+                    self.stop_scheduler()
+
                 gevent.hub.signal(signal.SIGINT, request_force_stop)
                 gevent.hub.signal(signal.SIGTERM, request_force_stop)
 
@@ -104,13 +108,28 @@ class GeventWorker(Worker):
                       format(self.gevent_pool.size, self.key, VERSION))
         self.set_state(WorkerStatus.STARTED)
 
+        if with_scheduler:
+            self.scheduler = RQScheduler(
+                self.queues, connection=self.connection, logging_level=logging_level,
+                date_format=date_format, log_format=log_format, serializer=self.serializer)
+            self.scheduler.acquire_locks()
+            # If lock is acquired, start scheduler
+            if self.scheduler.acquired_locks:
+                # If worker is run on burst mode, enqueue_scheduled_jobs()
+                # before working. Otherwise, start scheduler in a separate process
+                if burst:
+                    self.scheduler.enqueue_scheduled_jobs()
+                    self.scheduler.release_locks()
+                else:
+                    self.scheduler.start()
+
         try:
             while True:
                 try:
                     self.check_for_suspension(burst)
 
                     if self.should_run_maintenance_tasks:
-                        self.clean_registries()
+                        self.run_maintenance_tasks()
 
                     if self._stop_requested:
                         self.log.info('Stopping on request.')
@@ -139,6 +158,9 @@ class GeventWorker(Worker):
 
         finally:
             if not self.is_horse:
+                if self.scheduler:
+                    self.stop_scheduler()
+
                 self.register_death()
         return self.did_perform_work
 
@@ -152,9 +174,9 @@ class GeventWorker(Worker):
         """
         # If the is a burst worker it's not needed to spawn greenlet
         if burst:
-            return self._work(burst, logging_level)
+            return self._work(burst, logging_level, with_scheduler=with_scheduler)
 
-        self.gevent_worker = gevent.spawn(self._work, burst)
+        self.gevent_worker = gevent.spawn(self._work, burst, with_scheduler=with_scheduler)
         self.gevent_worker.join()
         return self.gevent_worker.value
 
